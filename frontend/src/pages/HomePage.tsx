@@ -157,7 +157,12 @@ const HomePage = () => {
                     placeholder="e.g. 15"
                     value={percentage}
                     onChange={(e) => setPercentage(e.target.value)}
+                    aria-describedby="percentage-help"
+                    aria-required="true"
                   />
+                  <div id="percentage-help" className="sr-only">
+                    Enter the percentage value you want to calculate
+                  </div>
                 </div>
                 <div>
                   <Label htmlFor="value">Of Value</Label>
@@ -167,16 +172,34 @@ const HomePage = () => {
                     placeholder="e.g. 200"
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
+                    aria-describedby="value-help"
+                    aria-required="true"
                   />
+                  <div id="value-help" className="sr-only">
+                    Enter the base value to calculate the percentage of
+                  </div>
                 </div>
               </div>
               
-              <Button onClick={calculatePercentage} className="w-full">
+              <Button 
+                onClick={calculatePercentage} 
+                className="w-full"
+                aria-describedby="calculate-help"
+                disabled={!percentage || !value}
+              >
                 Calculate
               </Button>
+              <div id="calculate-help" className="sr-only">
+                Click to calculate the percentage result
+              </div>
               
               {result !== null && (
-                <div className="text-center p-4 bg-blue-50 rounded-lg">
+                <div 
+                  className="text-center p-4 bg-blue-50 rounded-lg"
+                  role="region"
+                  aria-live="polite"
+                  aria-label="Calculation result"
+                >
                   <p className="text-lg">
                     <strong>{percentage}%</strong> of <strong>{value}</strong> = <strong className="text-blue-600">{result.toLocaleString('en-AU')}</strong>
                   </p>
@@ -199,11 +222,16 @@ const HomePage = () => {
             {calculatorTools.map((tool) => {
               const Icon = tool.icon
               return (
-                <Link key={tool.path} to={tool.path}>
-                  <Card className="h-full hover:shadow-lg transition-shadow">
+                <Link 
+                  key={tool.path} 
+                  to={tool.path}
+                  className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg"
+                  aria-label={`Go to ${tool.title}`}
+                >
+                  <Card className="h-full hover:shadow-lg transition-shadow focus-within:ring-2 focus-within:ring-blue-500">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
-                        <Icon className={`h-5 w-5 ${tool.color}`} />
+                        <Icon className={`h-5 w-5 ${tool.color}`} aria-hidden="true" />
                         {tool.title}
                       </CardTitle>
                     </CardHeader>
@@ -217,110 +245,118 @@ const HomePage = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg p-8 mb-16">
+        <section className="bg-white rounded-lg p-8 mb-16">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">
             How to Use Our Percentage Calculator
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="text-center">
-              <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+              <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4" aria-hidden="true">
                 <span className="text-blue-600 font-bold">1</span>
               </div>
               <h3 className="font-semibold mb-2">Enter Your Numbers</h3>
               <p className="text-gray-600">Input the percentage and the value you want to calculate</p>
             </div>
             <div className="text-center">
-              <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+              <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4" aria-hidden="true">
                 <span className="text-blue-600 font-bold">2</span>
               </div>
               <h3 className="font-semibold mb-2">Click Calculate</h3>
               <p className="text-gray-600">Press the calculate button for instant results</p>
             </div>
             <div className="text-center">
-              <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+              <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4" aria-hidden="true">
                 <span className="text-blue-600 font-bold">3</span>
               </div>
               <h3 className="font-semibold mb-2">Get Your Answer</h3>
               <p className="text-gray-600">View your result with step-by-step explanation</p>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div className="bg-gray-100 rounded-lg p-8 mb-16">
+        <section className="bg-gray-100 rounded-lg p-8 mb-16">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">
             Popular Percentage Calculations in Australia
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h3 className="font-semibold mb-3">Business & Finance</h3>
-              <ul className="space-y-2 text-gray-700">
-                <li>• GST calculations (10% tax)</li>
-                <li>• Salary increase percentages</li>
-                <li>• Investment returns</li>
-                <li>• Loan interest calculations</li>
+              <ul className="space-y-2 text-gray-700" role="list">
+                <li>GST calculations (10% tax)</li>
+                <li>Salary increase percentages</li>
+                <li>Investment returns</li>
+                <li>Loan interest calculations</li>
               </ul>
             </div>
             <div>
               <h3 className="font-semibold mb-3">Shopping & Everyday</h3>
-              <ul className="space-y-2 text-gray-700">
-                <li>• Sale discounts and markdowns</li>
-                <li>• Tip calculations at restaurants</li>
-                <li>• Price comparisons</li>
-                <li>• Budget percentage allocations</li>
+              <ul className="space-y-2 text-gray-700" role="list">
+                <li>Sale discounts and markdowns</li>
+                <li>Tip calculations at restaurants</li>
+                <li>Price comparisons</li>
+                <li>Budget percentage allocations</li>
               </ul>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div className="mb-16">
+        <section className="mb-16">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">
             Frequently Asked Questions
           </h2>
-          <div className="space-y-6">
-            <div>
+          <div className="space-y-6" role="list">
+            <article className="bg-white p-6 rounded-lg border">
               <h3 className="text-lg font-semibold mb-2">How do you calculate a percentage?</h3>
               <p className="text-gray-700">
                 To calculate a percentage, divide the part by the whole and multiply by 100. 
                 For example: 25/200 = 0.125 → 12.5%. You can also use our free percentage calculator for instant results.
               </p>
-            </div>
-            <div>
+            </article>
+            <article className="bg-white p-6 rounded-lg border">
               <h3 className="text-lg font-semibold mb-2">What is the percentage formula?</h3>
               <p className="text-gray-700">
                 The basic percentage formula is: (Part/Whole) × 100 = Percentage. 
                 For percentage of a number: (Percentage/100) × Number = Result.
               </p>
-            </div>
-            <div>
+            </article>
+            <article className="bg-white p-6 rounded-lg border">
               <h3 className="text-lg font-semibold mb-2">How do I calculate GST in Australia?</h3>
               <p className="text-gray-700">
                 GST in Australia is 10%. To add GST: multiply by 1.1. To remove GST: divide by 1.1. 
-                Use our <Link to="/gst-percentage-calculator" className="text-blue-600 hover:underline">GST calculator</Link> for quick calculations.
+                Use our <Link 
+                  to="/gst-percentage-calculator" 
+                  className="text-blue-600 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-sm"
+                >
+                  GST calculator
+                </Link> for quick calculations.
               </p>
-            </div>
-            <div>
+            </article>
+            <article className="bg-white p-6 rounded-lg border">
               <h3 className="text-lg font-semibold mb-2">Is this calculator free to use?</h3>
               <p className="text-gray-700">
                 Yes! Our percentage calculator is completely free to use with no registration required. 
                 All calculations are performed instantly in your browser.
               </p>
-            </div>
+            </article>
           </div>
-        </div>
+        </section>
 
-        <div className="text-center">
+        <section className="text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
             Need Help with Percentage Calculations?
           </h2>
           <p className="text-gray-600 mb-6">
             Check out our comprehensive guides and tutorials in our blog section.
           </p>
-          <Link to="/blog">
+          <Link 
+            to="/blog"
+            className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md"
+          >
             <Button size="lg">
               View All Guides
             </Button>
           </Link>
-        </div>
+        </section>
       </div>
     </>
   )

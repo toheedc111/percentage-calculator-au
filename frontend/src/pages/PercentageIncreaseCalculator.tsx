@@ -109,7 +109,12 @@ const PercentageIncreaseCalculator = () => {
                     placeholder="e.g. 50000"
                     value={originalValue}
                     onChange={(e) => setOriginalValue(e.target.value)}
+                    aria-describedby="original-help"
+                    aria-required="true"
                   />
+                  <div id="original-help" className="sr-only">
+                    Enter the original or starting value
+                  </div>
                 </div>
                 <div>
                   <Label htmlFor="new">New Value</Label>
@@ -119,16 +124,34 @@ const PercentageIncreaseCalculator = () => {
                     placeholder="e.g. 55000"
                     value={newValue}
                     onChange={(e) => setNewValue(e.target.value)}
+                    aria-describedby="new-help"
+                    aria-required="true"
                   />
+                  <div id="new-help" className="sr-only">
+                    Enter the new or final value
+                  </div>
                 </div>
               </div>
               
-              <Button onClick={calculateIncrease} className="w-full">
+              <Button 
+                onClick={calculateIncrease} 
+                className="w-full"
+                disabled={!originalValue || !newValue}
+                aria-describedby="calculate-increase-help"
+              >
                 Calculate Percentage Increase
               </Button>
+              <div id="calculate-increase-help" className="sr-only">
+                Click to calculate the percentage increase between the two values
+              </div>
               
               {result !== null && (
-                <div className="text-center p-6 bg-green-50 rounded-lg border border-green-200">
+                <div 
+                  className="text-center p-6 bg-green-50 rounded-lg border border-green-200"
+                  role="region"
+                  aria-live="polite"
+                  aria-label="Calculation result"
+                >
                   <div className="space-y-2">
                     <p className="text-lg">
                       <strong>Increase Amount:</strong> <span className="text-green-600">${result.increase.toLocaleString('en-AU')}</span>

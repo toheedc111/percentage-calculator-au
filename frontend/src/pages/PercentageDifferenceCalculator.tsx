@@ -84,7 +84,12 @@ const PercentageDifferenceCalculator = () => {
                     placeholder="e.g. 80000"
                     value={value1}
                     onChange={(e) => setValue1(e.target.value)}
+                    aria-describedby="value1-help"
+                    aria-required="true"
                   />
+                  <div id="value1-help" className="sr-only">
+                    Enter the first value for comparison
+                  </div>
                 </div>
                 <div>
                   <Label htmlFor="value2">Second Value</Label>
@@ -94,16 +99,34 @@ const PercentageDifferenceCalculator = () => {
                     placeholder="e.g. 90000"
                     value={value2}
                     onChange={(e) => setValue2(e.target.value)}
+                    aria-describedby="value2-help"
+                    aria-required="true"
                   />
+                  <div id="value2-help" className="sr-only">
+                    Enter the second value for comparison
+                  </div>
                 </div>
               </div>
               
-              <Button onClick={calculateDifference} className="w-full">
+              <Button 
+                onClick={calculateDifference} 
+                className="w-full"
+                disabled={!value1 || !value2}
+                aria-describedby="calculate-difference-help"
+              >
                 Calculate Percentage Difference
               </Button>
+              <div id="calculate-difference-help" className="sr-only">
+                Click to calculate the percentage difference between the two values
+              </div>
               
               {result !== null && (
-                <div className="text-center p-6 bg-blue-50 rounded-lg border border-blue-200">
+                <div 
+                  className="text-center p-6 bg-blue-50 rounded-lg border border-blue-200"
+                  role="region"
+                  aria-live="polite"
+                  aria-label="Calculation result"
+                >
                   <div className="space-y-2">
                     <p className="text-lg">
                       <strong>Absolute Difference:</strong> <span className="text-blue-600">{result.difference.toLocaleString('en-AU')}</span>
@@ -123,127 +146,141 @@ const PercentageDifferenceCalculator = () => {
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           <div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">How to Calculate Percentage Difference</h2>
             <div className="space-y-4">
-              <div className="bg-white p-6 rounded-lg border">
+              <article className="bg-white p-6 rounded-lg border">
                 <h3 className="font-semibold mb-2">Step 1: Find Absolute Difference</h3>
                 <p className="text-gray-700">Subtract the smaller value from the larger value.</p>
                 <p className="text-sm text-gray-600 mt-1">|Value1 - Value2| = Absolute Difference</p>
-              </div>
-              <div className="bg-white p-6 rounded-lg border">
+              </article>
+              <article className="bg-white p-6 rounded-lg border">
                 <h3 className="font-semibold mb-2">Step 2: Calculate Average</h3>
                 <p className="text-gray-700">Add both values and divide by 2 to get the average.</p>
                 <p className="text-sm text-gray-600 mt-1">(Value1 + Value2) ÷ 2 = Average</p>
-              </div>
-              <div className="bg-white p-6 rounded-lg border">
+              </article>
+              <article className="bg-white p-6 rounded-lg border">
                 <h3 className="font-semibold mb-2">Step 3: Calculate Percentage</h3>
                 <p className="text-gray-700">Divide the difference by the average and multiply by 100.</p>
                 <p className="text-sm text-gray-600 mt-1">(Difference ÷ Average) × 100 = Percentage</p>
-              </div>
+              </article>
             </div>
           </div>
 
           <div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Australian Examples</h2>
             <div className="space-y-4">
-              <div className="bg-green-50 p-6 rounded-lg border border-green-200">
+              <article className="bg-green-50 p-6 rounded-lg border border-green-200">
                 <h3 className="font-semibold mb-2 text-green-800">Salary Comparison</h3>
                 <p className="text-gray-700 mb-2">Comparing salaries of $75,000 and $85,000</p>
                 <p className="text-sm text-gray-600">
                   Calculation: |75,000 - 85,000| ÷ 80,000 × 100 = <strong>12.5% difference</strong>
                 </p>
-              </div>
-              <div className="bg-purple-50 p-6 rounded-lg border border-purple-200">
+              </article>
+              <article className="bg-purple-50 p-6 rounded-lg border border-purple-200">
                 <h3 className="font-semibold mb-2 text-purple-800">House Prices</h3>
                 <p className="text-gray-700 mb-2">Comparing houses at $650,000 and $750,000</p>
                 <p className="text-sm text-gray-600">
                   Calculation: |650,000 - 750,000| ÷ 700,000 × 100 = <strong>14.3% difference</strong>
                 </p>
-              </div>
-              <div className="bg-orange-50 p-6 rounded-lg border border-orange-200">
+              </article>
+              <article className="bg-orange-50 p-6 rounded-lg border border-orange-200">
                 <h3 className="font-semibold mb-2 text-orange-800">Test Scores</h3>
                 <p className="text-gray-700 mb-2">Comparing test scores of 85 and 92</p>
                 <p className="text-sm text-gray-600">
                   Calculation: |85 - 92| ÷ 88.5 × 100 = <strong>7.9% difference</strong>
                 </p>
-              </div>
+              </article>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div className="bg-gray-100 rounded-lg p-8 mb-12">
+        <section className="bg-gray-100 rounded-lg p-8 mb-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">When to Use Percentage Difference</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h3 className="font-semibold mb-3">Comparisons</h3>
-              <ul className="space-y-2 text-gray-700">
-                <li>• Comparing two similar values</li>
-                <li>• Salary negotiations</li>
-                <li>• Product price comparisons</li>
-                <li>• Performance metrics</li>
+              <ul className="space-y-2 text-gray-700" role="list">
+                <li>Comparing two similar values</li>
+                <li>Salary negotiations</li>
+                <li>Product price comparisons</li>
+                <li>Performance metrics</li>
               </ul>
             </div>
             <div>
               <h3 className="font-semibold mb-3">Analysis</h3>
-              <ul className="space-y-2 text-gray-700">
-                <li>• Market research data</li>
-                <li>• Scientific measurements</li>
-                <li>• Quality control testing</li>
-                <li>• Statistical analysis</li>
+              <ul className="space-y-2 text-gray-700" role="list">
+                <li>Market research data</li>
+                <li>Scientific measurements</li>
+                <li>Quality control testing</li>
+                <li>Statistical analysis</li>
               </ul>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div className="mb-12">
+        <section className="mb-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
-          <div className="space-y-6">
-            <div className="bg-white p-6 rounded-lg border">
+          <div className="space-y-6" role="list">
+            <article className="bg-white p-6 rounded-lg border">
               <h3 className="text-lg font-semibold mb-2">What is percentage difference?</h3>
               <p className="text-gray-700">
                 Percentage difference shows how much two values differ relative to their average. 
                 It's useful when comparing two similar values without considering which is the reference point.
               </p>
-            </div>
-            <div className="bg-white p-6 rounded-lg border">
+            </article>
+            <article className="bg-white p-6 rounded-lg border">
               <h3 className="text-lg font-semibold mb-2">How is percentage difference different from percentage change?</h3>
               <p className="text-gray-700">
                 Percentage difference compares two values using their average as the base, while percentage change 
                 uses one specific value as the reference point (usually the original value).
               </p>
-            </div>
-            <div className="bg-white p-6 rounded-lg border">
+            </article>
+            <article className="bg-white p-6 rounded-lg border">
               <h3 className="text-lg font-semibold mb-2">Can percentage difference be negative?</h3>
               <p className="text-gray-700">
                 No, percentage difference is always positive because it uses the absolute difference between values. 
                 The order of the values doesn't matter in the calculation.
               </p>
-            </div>
+            </article>
           </div>
-        </div>
+        </section>
 
-        <div className="bg-blue-50 rounded-lg p-8 text-center">
+        <section className="bg-blue-50 rounded-lg p-8 text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Need Other Percentage Calculations?</h2>
           <p className="text-gray-600 mb-6">
             Explore our other percentage calculators for different types of calculations.
           </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/percentage-increase-calculator">
-              <Button variant="outline">Percentage Increase</Button>
-            </Link>
-            <Link to="/percentage-decrease-calculator">
-              <Button variant="outline">Percentage Decrease</Button>
-            </Link>
-            <Link to="/gst-percentage-calculator">
-              <Button variant="outline">GST Calculator</Button>
-            </Link>
-            <Link to="/">
-              <Button variant="outline">Main Calculator</Button>
-            </Link>
-          </div>
-        </div>
+          <nav aria-label="Related calculators">
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link 
+                to="/percentage-increase-calculator"
+                className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md"
+              >
+                <Button variant="outline">Percentage Increase</Button>
+              </Link>
+              <Link 
+                to="/percentage-decrease-calculator"
+                className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md"
+              >
+                <Button variant="outline">Percentage Decrease</Button>
+              </Link>
+              <Link 
+                to="/gst-percentage-calculator"
+                className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md"
+              >
+                <Button variant="outline">GST Calculator</Button>
+              </Link>
+              <Link 
+                to="/"
+                className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md"
+              >
+                <Button variant="outline">Main Calculator</Button>
+              </Link>
+            </div>
+          </nav>
+        </section>
       </div>
     </>
   )

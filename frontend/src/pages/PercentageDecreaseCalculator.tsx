@@ -109,7 +109,12 @@ const PercentageDecreaseCalculator = () => {
                     placeholder="e.g. 100"
                     value={originalValue}
                     onChange={(e) => setOriginalValue(e.target.value)}
+                    aria-describedby="original-help"
+                    aria-required="true"
                   />
+                  <div id="original-help" className="sr-only">
+                    Enter the original or starting value before the decrease
+                  </div>
                 </div>
                 <div>
                   <Label htmlFor="new">New Value</Label>
@@ -119,16 +124,34 @@ const PercentageDecreaseCalculator = () => {
                     placeholder="e.g. 80"
                     value={newValue}
                     onChange={(e) => setNewValue(e.target.value)}
+                    aria-describedby="new-help"
+                    aria-required="true"
                   />
+                  <div id="new-help" className="sr-only">
+                    Enter the new or final value after the decrease
+                  </div>
                 </div>
               </div>
               
-              <Button onClick={calculateDecrease} className="w-full">
+              <Button 
+                onClick={calculateDecrease} 
+                className="w-full"
+                disabled={!originalValue || !newValue}
+                aria-describedby="calculate-decrease-help"
+              >
                 Calculate Percentage Decrease
               </Button>
+              <div id="calculate-decrease-help" className="sr-only">
+                Click to calculate the percentage decrease between the two values
+              </div>
               
               {result !== null && (
-                <div className="text-center p-6 bg-red-50 rounded-lg border border-red-200">
+                <div 
+                  className="text-center p-6 bg-red-50 rounded-lg border border-red-200"
+                  role="region"
+                  aria-live="polite"
+                  aria-label="Calculation result"
+                >
                   <div className="space-y-2">
                     <p className="text-lg">
                       <strong>Decrease Amount:</strong> <span className="text-red-600">${result.decrease.toLocaleString('en-AU')}</span>
@@ -148,126 +171,140 @@ const PercentageDecreaseCalculator = () => {
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           <div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">How to Calculate Percentage Decrease</h2>
             <div className="space-y-4">
-              <div className="bg-white p-6 rounded-lg border">
+              <article className="bg-white p-6 rounded-lg border">
                 <h3 className="font-semibold mb-2">Step 1: Find the Difference</h3>
                 <p className="text-gray-700">Subtract the new value from the original value to find the decrease amount.</p>
                 <p className="text-sm text-gray-600 mt-1">Original Value - New Value = Decrease</p>
-              </div>
-              <div className="bg-white p-6 rounded-lg border">
+              </article>
+              <article className="bg-white p-6 rounded-lg border">
                 <h3 className="font-semibold mb-2">Step 2: Divide by Original</h3>
                 <p className="text-gray-700">Divide the decrease by the original value.</p>
                 <p className="text-sm text-gray-600 mt-1">Decrease ÷ Original Value = Decimal</p>
-              </div>
-              <div className="bg-white p-6 rounded-lg border">
+              </article>
+              <article className="bg-white p-6 rounded-lg border">
                 <h3 className="font-semibold mb-2">Step 3: Convert to Percentage</h3>
                 <p className="text-gray-700">Multiply by 100 to get the percentage decrease.</p>
                 <p className="text-sm text-gray-600 mt-1">Decimal × 100 = Percentage Decrease</p>
-              </div>
+              </article>
             </div>
           </div>
 
           <div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Australian Examples</h2>
             <div className="space-y-4">
-              <div className="bg-red-50 p-6 rounded-lg border border-red-200">
+              <article className="bg-red-50 p-6 rounded-lg border border-red-200">
                 <h3 className="font-semibold mb-2 text-red-800">Sale Discount</h3>
                 <p className="text-gray-700 mb-2">Item price drops from $150 to $120</p>
                 <p className="text-sm text-gray-600">
                   Calculation: ((150 - 120) ÷ 150) × 100 = <strong>20% decrease</strong>
                 </p>
-              </div>
-              <div className="bg-orange-50 p-6 rounded-lg border border-orange-200">
+              </article>
+              <article className="bg-orange-50 p-6 rounded-lg border border-orange-200">
                 <h3 className="font-semibold mb-2 text-orange-800">Fuel Price Drop</h3>
                 <p className="text-gray-700 mb-2">Petrol price falls from $1.80 to $1.62 per litre</p>
                 <p className="text-sm text-gray-600">
                   Calculation: ((1.80 - 1.62) ÷ 1.80) × 100 = <strong>10% decrease</strong>
                 </p>
-              </div>
-              <div className="bg-blue-50 p-6 rounded-lg border border-blue-200">
+              </article>
+              <article className="bg-blue-50 p-6 rounded-lg border border-blue-200">
                 <h3 className="font-semibold mb-2 text-blue-800">Electricity Bill</h3>
                 <p className="text-gray-700 mb-2">Monthly bill reduces from $300 to $240</p>
                 <p className="text-sm text-gray-600">
                   Calculation: ((300 - 240) ÷ 300) × 100 = <strong>20% decrease</strong>
                 </p>
-              </div>
+              </article>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div className="bg-gray-100 rounded-lg p-8 mb-12">
+        <section className="bg-gray-100 rounded-lg p-8 mb-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Common Uses for Percentage Decrease</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h3 className="font-semibold mb-3">Shopping & Retail</h3>
-              <ul className="space-y-2 text-gray-700">
-                <li>• Sale discounts and markdowns</li>
-                <li>• Clearance price reductions</li>
-                <li>• Seasonal sale calculations</li>
-                <li>• Bulk purchase discounts</li>
+              <ul className="space-y-2 text-gray-700" role="list">
+                <li>Sale discounts and markdowns</li>
+                <li>Clearance price reductions</li>
+                <li>Seasonal sale calculations</li>
+                <li>Bulk purchase discounts</li>
               </ul>
             </div>
             <div>
               <h3 className="font-semibold mb-3">Business & Finance</h3>
-              <ul className="space-y-2 text-gray-700">
-                <li>• Cost reduction analysis</li>
-                <li>• Revenue decline tracking</li>
-                <li>• Budget cut calculations</li>
-                <li>• Expense optimization</li>
+              <ul className="space-y-2 text-gray-700" role="list">
+                <li>Cost reduction analysis</li>
+                <li>Revenue decline tracking</li>
+                <li>Budget cut calculations</li>
+                <li>Expense optimization</li>
               </ul>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div className="mb-12">
+        <section className="mb-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
-          <div className="space-y-6">
-            <div className="bg-white p-6 rounded-lg border">
+          <div className="space-y-6" role="list">
+            <article className="bg-white p-6 rounded-lg border">
               <h3 className="text-lg font-semibold mb-2">How do you calculate percentage decrease?</h3>
               <p className="text-gray-700">
                 To calculate percentage decrease: ((Original Value - New Value) / Original Value) × 100. 
                 For example, if a price drops from $100 to $80: ((100 - 80) / 100) × 100 = 20% decrease.
               </p>
-            </div>
-            <div className="bg-white p-6 rounded-lg border">
+            </article>
+            <article className="bg-white p-6 rounded-lg border">
               <h3 className="text-lg font-semibold mb-2">What is the percentage decrease formula?</h3>
               <p className="text-gray-700">
                 The percentage decrease formula is: Percentage Decrease = ((Original Value - New Value) / Original Value) × 100
               </p>
-            </div>
-            <div className="bg-white p-6 rounded-lg border">
+            </article>
+            <article className="bg-white p-6 rounded-lg border">
               <h3 className="text-lg font-semibold mb-2">What's the difference between discount and percentage decrease?</h3>
               <p className="text-gray-700">
                 A discount is the amount saved, while percentage decrease shows how much the price dropped relative to the original price. 
                 Both use the same calculation method.
               </p>
-            </div>
+            </article>
           </div>
-        </div>
+        </section>
 
-        <div className="bg-blue-50 rounded-lg p-8 text-center">
+        <section className="bg-blue-50 rounded-lg p-8 text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Need Other Percentage Calculations?</h2>
           <p className="text-gray-600 mb-6">
             Explore our other percentage calculators for different types of calculations.
           </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/percentage-increase-calculator">
-              <Button variant="outline">Percentage Increase</Button>
-            </Link>
-            <Link to="/percentage-difference-calculator">
-              <Button variant="outline">Percentage Difference</Button>
-            </Link>
-            <Link to="/gst-percentage-calculator">
-              <Button variant="outline">GST Calculator</Button>
-            </Link>
-            <Link to="/">
-              <Button variant="outline">Main Calculator</Button>
-            </Link>
-          </div>
-        </div>
+          <nav aria-label="Related calculators">
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link 
+                to="/percentage-increase-calculator"
+                className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md"
+              >
+                <Button variant="outline">Percentage Increase</Button>
+              </Link>
+              <Link 
+                to="/percentage-difference-calculator"
+                className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md"
+              >
+                <Button variant="outline">Percentage Difference</Button>
+              </Link>
+              <Link 
+                to="/gst-percentage-calculator"
+                className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md"
+              >
+                <Button variant="outline">GST Calculator</Button>
+              </Link>
+              <Link 
+                to="/"
+                className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md"
+              >
+                <Button variant="outline">Main Calculator</Button>
+              </Link>
+            </div>
+          </nav>
+        </section>
       </div>
     </>
   )

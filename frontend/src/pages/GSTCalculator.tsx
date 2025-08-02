@@ -104,12 +104,12 @@ const GSTCalculator = () => {
 
         <div className="max-w-2xl mx-auto mb-12">
           <Tabs defaultValue="add" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="add">Add GST</TabsTrigger>
-              <TabsTrigger value="remove">Remove GST</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2" role="tablist" aria-label="GST calculation options">
+              <TabsTrigger value="add" role="tab" aria-controls="add-gst-panel">Add GST</TabsTrigger>
+              <TabsTrigger value="remove" role="tab" aria-controls="remove-gst-panel">Remove GST</TabsTrigger>
             </TabsList>
             
-            <TabsContent value="add">
+            <TabsContent value="add" role="tabpanel" id="add-gst-panel" aria-labelledby="add-gst-tab">
               <Card>
                 <CardHeader>
                   <CardTitle>Add GST to Amount</CardTitle>
@@ -126,15 +126,33 @@ const GSTCalculator = () => {
                       placeholder="e.g. 100"
                       value={amount}
                       onChange={(e) => setAmount(e.target.value)}
+                      aria-describedby="add-amount-help"
+                      aria-required="true"
                     />
+                    <div id="add-amount-help" className="sr-only">
+                      Enter the amount before GST to calculate the total with GST added
+                    </div>
                   </div>
                   
-                  <Button onClick={calculateAddGST} className="w-full">
+                  <Button 
+                    onClick={calculateAddGST} 
+                    className="w-full"
+                    disabled={!amount}
+                    aria-describedby="add-gst-help"
+                  >
                     Add GST
                   </Button>
+                  <div id="add-gst-help" className="sr-only">
+                    Click to add 10% GST to the amount
+                  </div>
                   
                   {addGSTResult !== null && (
-                    <div className="text-center p-6 bg-orange-50 rounded-lg border border-orange-200">
+                    <div 
+                      className="text-center p-6 bg-orange-50 rounded-lg border border-orange-200"
+                      role="region"
+                      aria-live="polite"
+                      aria-label="GST calculation result"
+                    >
                       <div className="space-y-2">
                         <p className="text-lg">
                           <strong>GST Amount:</strong> <span className="text-orange-600">${addGSTResult.gstAmount.toFixed(2)}</span>
@@ -155,7 +173,7 @@ const GSTCalculator = () => {
               </Card>
             </TabsContent>
             
-            <TabsContent value="remove">
+            <TabsContent value="remove" role="tabpanel" id="remove-gst-panel" aria-labelledby="remove-gst-tab">
               <Card>
                 <CardHeader>
                   <CardTitle>Remove GST from Total</CardTitle>
@@ -172,15 +190,33 @@ const GSTCalculator = () => {
                       placeholder="e.g. 110"
                       value={amount}
                       onChange={(e) => setAmount(e.target.value)}
+                      aria-describedby="remove-amount-help"
+                      aria-required="true"
                     />
+                    <div id="remove-amount-help" className="sr-only">
+                      Enter the total amount including GST to calculate the amount without GST
+                    </div>
                   </div>
                   
-                  <Button onClick={calculateRemoveGST} className="w-full">
+                  <Button 
+                    onClick={calculateRemoveGST} 
+                    className="w-full"
+                    disabled={!amount}
+                    aria-describedby="remove-gst-help"
+                  >
                     Remove GST
                   </Button>
+                  <div id="remove-gst-help" className="sr-only">
+                    Click to remove 10% GST from the total amount
+                  </div>
                   
                   {removeGSTResult !== null && (
-                    <div className="text-center p-6 bg-blue-50 rounded-lg border border-blue-200">
+                    <div 
+                      className="text-center p-6 bg-blue-50 rounded-lg border border-blue-200"
+                      role="region"
+                      aria-live="polite"
+                      aria-label="GST removal result"
+                    >
                       <div className="space-y-2">
                         <p className="text-xl font-bold">
                           <strong>Amount (exc. GST):</strong> <span className="text-blue-600">${removeGSTResult.totalWithoutGST.toFixed(2)}</span>
@@ -203,139 +239,153 @@ const GSTCalculator = () => {
           </Tabs>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           <div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">GST in Australia</h2>
             <div className="space-y-4">
-              <div className="bg-white p-6 rounded-lg border">
+              <article className="bg-white p-6 rounded-lg border">
                 <h3 className="font-semibold mb-2">What is GST?</h3>
                 <p className="text-gray-700">GST (Goods and Services Tax) is a 10% tax applied to most goods and services in Australia. It was introduced in 2000.</p>
-              </div>
-              <div className="bg-white p-6 rounded-lg border">
+              </article>
+              <article className="bg-white p-6 rounded-lg border">
                 <h3 className="font-semibold mb-2">Who Pays GST?</h3>
                 <p className="text-gray-700">Businesses with annual turnover of $75,000+ must register for GST. Some items are GST-free (basic food, medical services).</p>
-              </div>
-              <div className="bg-white p-6 rounded-lg border">
+              </article>
+              <article className="bg-white p-6 rounded-lg border">
                 <h3 className="font-semibold mb-2">GST on Invoices</h3>
                 <p className="text-gray-700">Business invoices must show GST separately. Use "Add GST" for pricing and "Remove GST" for expense claims.</p>
-              </div>
+              </article>
             </div>
           </div>
 
           <div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Common GST Calculations</h2>
             <div className="space-y-4">
-              <div className="bg-green-50 p-6 rounded-lg border border-green-200">
+              <article className="bg-green-50 p-6 rounded-lg border border-green-200">
                 <h3 className="font-semibold mb-2 text-green-800">Service Invoice</h3>
                 <p className="text-gray-700 mb-2">Consulting fee: $500 + GST</p>
                 <p className="text-sm text-gray-600">
                   Total: $500 × 1.1 = <strong>$550 (GST: $50)</strong>
                 </p>
-              </div>
-              <div className="bg-blue-50 p-6 rounded-lg border border-blue-200">
+              </article>
+              <article className="bg-blue-50 p-6 rounded-lg border border-blue-200">
                 <h3 className="font-semibold mb-2 text-blue-800">Receipt Analysis</h3>
                 <p className="text-gray-700 mb-2">Receipt total: $220 (inc. GST)</p>
                 <p className="text-sm text-gray-600">
                   Amount: $220 ÷ 1.1 = <strong>$200 (GST: $20)</strong>
                 </p>
-              </div>
-              <div className="bg-purple-50 p-6 rounded-lg border border-purple-200">
+              </article>
+              <article className="bg-purple-50 p-6 rounded-lg border border-purple-200">
                 <h3 className="font-semibold mb-2 text-purple-800">Product Pricing</h3>
                 <p className="text-gray-700 mb-2">Product cost: $90 + GST</p>
                 <p className="text-sm text-gray-600">
                   Retail price: $90 × 1.1 = <strong>$99 (GST: $9)</strong>
                 </p>
-              </div>
+              </article>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div className="bg-gray-100 rounded-lg p-8 mb-12">
+        <section className="bg-gray-100 rounded-lg p-8 mb-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">GST Calculator Uses</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
               <h3 className="font-semibold mb-3">Business Invoicing</h3>
-              <ul className="space-y-2 text-gray-700">
-                <li>• Service invoices</li>
-                <li>• Product pricing</li>
-                <li>• Quote preparation</li>
-                <li>• Contract amounts</li>
+              <ul className="space-y-2 text-gray-700" role="list">
+                <li>Service invoices</li>
+                <li>Product pricing</li>
+                <li>Quote preparation</li>
+                <li>Contract amounts</li>
               </ul>
             </div>
             <div>
               <h3 className="font-semibold mb-3">Expense Claims</h3>
-              <ul className="space-y-2 text-gray-700">
-                <li>• Receipt analysis</li>
-                <li>• GST credit claims</li>
-                <li>• Business expenses</li>
-                <li>• Tax return preparation</li>
+              <ul className="space-y-2 text-gray-700" role="list">
+                <li>Receipt analysis</li>
+                <li>GST credit claims</li>
+                <li>Business expenses</li>
+                <li>Tax return preparation</li>
               </ul>
             </div>
             <div>
               <h3 className="font-semibold mb-3">Financial Planning</h3>
-              <ul className="space-y-2 text-gray-700">
-                <li>• Budget calculations</li>
-                <li>• Cost estimations</li>
-                <li>• Price comparisons</li>
-                <li>• Cash flow planning</li>
+              <ul className="space-y-2 text-gray-700" role="list">
+                <li>Budget calculations</li>
+                <li>Cost estimations</li>
+                <li>Price comparisons</li>
+                <li>Cash flow planning</li>
               </ul>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div className="mb-12">
+        <section className="mb-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
-          <div className="space-y-6">
-            <div className="bg-white p-6 rounded-lg border">
+          <div className="space-y-6" role="list">
+            <article className="bg-white p-6 rounded-lg border">
               <h3 className="text-lg font-semibold mb-2">What is GST in Australia?</h3>
               <p className="text-gray-700">
                 GST (Goods and Services Tax) in Australia is 10%. It's added to most goods and services. 
                 To add GST: multiply by 1.1. To remove GST: divide by 1.1.
               </p>
-            </div>
-            <div className="bg-white p-6 rounded-lg border">
+            </article>
+            <article className="bg-white p-6 rounded-lg border">
               <h3 className="text-lg font-semibold mb-2">How do you calculate GST?</h3>
               <p className="text-gray-700">
                 To add GST: Amount × 0.1 = GST amount. To remove GST from total: Total ÷ 1.1 = Amount without GST.
               </p>
-            </div>
-            <div className="bg-white p-6 rounded-lg border">
+            </article>
+            <article className="bg-white p-6 rounded-lg border">
               <h3 className="text-lg font-semibold mb-2">Do I need to register for GST?</h3>
               <p className="text-gray-700">
                 You must register for GST if your business turnover is $75,000 or more per year. 
                 Some businesses can register voluntarily even with lower turnover.
               </p>
-            </div>
-            <div className="bg-white p-6 rounded-lg border">
+            </article>
+            <article className="bg-white p-6 rounded-lg border">
               <h3 className="text-lg font-semibold mb-2">What items are GST-free?</h3>
               <p className="text-gray-700">
                 Basic food items, medical services, education, and some exports are GST-free. 
                 Most other goods and services include 10% GST.
               </p>
-            </div>
+            </article>
           </div>
-        </div>
+        </section>
 
-        <div className="bg-orange-50 rounded-lg p-8 text-center">
+        <section className="bg-orange-50 rounded-lg p-8 text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Need Other Percentage Calculations?</h2>
           <p className="text-gray-600 mb-6">
             Explore our other percentage calculators for different types of calculations.
           </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/percentage-increase-calculator">
-              <Button variant="outline">Percentage Increase</Button>
-            </Link>
-            <Link to="/percentage-decrease-calculator">
-              <Button variant="outline">Percentage Decrease</Button>
-            </Link>
-            <Link to="/what-is-x-percent-of-y">
-              <Button variant="outline">What is X% of Y</Button>
-            </Link>
-            <Link to="/">
-              <Button variant="outline">Main Calculator</Button>
-            </Link>
-          </div>
-        </div>
+          <nav aria-label="Related calculators">
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link 
+                to="/percentage-increase-calculator"
+                className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md"
+              >
+                <Button variant="outline">Percentage Increase</Button>
+              </Link>
+              <Link 
+                to="/percentage-decrease-calculator"
+                className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md"
+              >
+                <Button variant="outline">Percentage Decrease</Button>
+              </Link>
+              <Link 
+                to="/what-is-x-percent-of-y"
+                className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md"
+              >
+                <Button variant="outline">What is X% of Y</Button>
+              </Link>
+              <Link 
+                to="/"
+                className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md"
+              >
+                <Button variant="outline">Main Calculator</Button>
+              </Link>
+            </div>
+          </nav>
+        </section>
       </div>
     </>
   )
